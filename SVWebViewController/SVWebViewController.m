@@ -72,6 +72,7 @@ NSString *const SVWebViewControllerActivityTypeMail = @"activity.Mail";
 
 @synthesize excludedActivityTypes, applicationActivities;
 
+@synthesize postBody;
 @synthesize URL, mainWebView, alwaysShowNavigationBar;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem;
 @synthesize pageActionSheet, presentedActivities, selectedActivity, presentedActivityViewController;
@@ -179,8 +180,20 @@ NSString *const SVWebViewControllerActivityTypeMail = @"activity.Mail";
     return self;
 }
 
+- (id)initWithAddress:(NSString *)urlString andPostBody:(NSString*)postData
+{
+    postBody = postData;
+    return [self initWithAddress:urlString];
+}
+
 - (id)initWithAddress:(NSString *)urlString {
     return [self initWithURL:[NSURL URLWithString:urlString]];
+}
+
+- (id)initWithURL:(NSURL *)pageURL andPostBody:(NSString*)postData
+{
+    postBody = postData;
+    return [self initWithURL:pageURL];
 }
 
 - (id)initWithURL:(NSURL*)pageURL {
@@ -199,7 +212,18 @@ NSString *const SVWebViewControllerActivityTypeMail = @"activity.Mail";
     mainWebView.delegate = self;
     mainWebView.scalesPageToFit = YES;
     self.webViewScrollView.delegate = self;
-    [mainWebView loadRequest:[NSURLRequest requestWithURL:self.URL]];
+    
+    // URL Request Object
+    NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:self.URL];
+    if(postBody != nil)
+    {
+        // Use POST to allow us to pass in the arguments
+        // and the pass in those args using UTF8 encoding
+        [requestObj setHTTPMethod:@"POST"];
+        [requestObj setHTTPBody:[self.postBody dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    [mainWebView loadRequest:requestObj];
+    self.postBody = nil;
     self.view = mainWebView;
 }
 

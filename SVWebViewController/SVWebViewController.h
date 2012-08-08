@@ -13,10 +13,14 @@
 @interface SVWebViewController : UIViewController
 
 - (id)initWithAddress:(NSString*)urlString;
+- (id)initWithAddress:(NSString *)urlString andPostBody:(NSString*)postData;
 - (id)initWithURL:(NSURL*)URL;
+- (id)initWithURL:(NSURL *)pageURL andPostBody:(NSString*)postData;
 
 @property (nonatomic, copy) NSArray *excludedActivityTypes;
 @property (nonatomic, copy) NSArray *applicationActivities;
 @property (nonatomic, readwrite) BOOL alwaysShowNavigationBar;
+
+@property (nonatomic, weak) NSString *postBody;
 
 @end
