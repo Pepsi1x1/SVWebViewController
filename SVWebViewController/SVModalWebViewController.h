@@ -13,7 +13,9 @@
 @interface SVModalWebViewController : UINavigationController
 
 - (id)initWithAddress:(NSString*)urlString;
-- (id)initWithURL:(NSURL *)URL;
+- (id)initWithAddress:(NSString *)urlString andPostBody:(NSString*)postData;
+- (id)initWithURL:(NSURL*)URL;
+- (id)initWithURL:(NSURL *)pageURL andPostBody:(NSString*)postData;
 
 @property (nonatomic, strong) UIColor *barsTintColor;
 

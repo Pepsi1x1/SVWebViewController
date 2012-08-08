@@ -27,8 +27,26 @@
     return [self initWithURL:[NSURL URLWithString:urlString]];
 }
 
+- (id)initWithAddress:(NSString *)urlString andPostBody:(NSString*)postData
+{
+    return [self initWithURL:[NSURL URLWithString:urlString] andPostBody:postData];
+}
+
+- (id)initWithURL:(NSURL *)pageURL andPostBody:(NSString*)postData
+{
+    self.webViewController = [[SVWebViewController alloc] initWithURL:URL andPostBody:postData];
+    self = [initNavBar];
+    return self;
+}
+
 - (id)initWithURL:(NSURL *)URL {
     self.webViewController = [[SVWebViewController alloc] initWithURL:URL];
+    self = [initNavBar];
+    return self;
+}
+
+- (id)initNavBar
+{
     if (self = [super initWithRootViewController:self.webViewController]) {
         self.webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:webViewController action:@selector(doneButtonClicked:)];
     }
